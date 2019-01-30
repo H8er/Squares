@@ -1,17 +1,8 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
-#include <algorithm>
 #include <chrono>
 using namespace std;
-
-
-double min(double a, double b){
-	return(a<b?a:b);
-}
-double max(double a, double b){
-	return(a>b?a:b);
-}
 
 struct rectangle{
 	double x1;
@@ -101,85 +92,85 @@ bool veccomp(rectangle &a, rectangle &b){
 }
 
 
-vector<rectangle> merge_rect(vector<rectangle> &tomerge){
-
-for(int i = 0; i<tomerge.size();i++){
-	for(int j=0;j<tomerge.size();j++){
-      if(i!=j){
-    		if(tomerge[i].x2 == tomerge[j].x1 and tomerge[i].y2 == tomerge[j].y2 and tomerge[i].y1 == tomerge[j].y1){
-          rectangle r1;
-          r1 = {tomerge[i].x1,tomerge[j].x2,tomerge[i].y1,tomerge[j].y2};
-          tomerge.push_back(r1);
-          //cout<<"1\n"<<"["<<r1.x1<<":"<<r1.x2<<"]:["<<r1.y1<<":"<<r1.y2<<"]\n";
-                if(i>j){
-                  tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-                  tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-                }
-                else{
-                  tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-                  tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-                }i=0;
-        }
-        if(tomerge[i].y2 == tomerge[j].y1 and tomerge[i].x2 == tomerge[j].x2 and tomerge[i].x1 == tomerge[j].x1){
-          rectangle r1;
-          r1 = {tomerge[i].x1,tomerge[j].x2,tomerge[i].y1,tomerge[j].y2};
-          tomerge.push_back(r1);
-          //cout<<"2\n"<<"["<<r1.x1<<":"<<r1.x2<<"]:["<<r1.y1<<":"<<r1.y2<<"]\n";
-                if(i>j){
-                  tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-                  tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-                }
-                else{
-                  tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-                  tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-                }i=0;
-        }
-      if(tomerge[i].y1 == tomerge[j].y2 and tomerge[i].x2 == tomerge[j].x2 and tomerge[i].x1 == tomerge[j].x1){
-        rectangle r1;
-        r1 = {tomerge[i].x1,tomerge[j].x2,tomerge[j].y1,tomerge[i].y2};
-        tomerge.push_back(r1);
-        //cout<<"3\n"<<"["<<r1.x1<<":"<<r1.x2<<"]:["<<r1.y1<<":"<<r1.y2<<"]\n";
-              if(i>j){
-                tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-                tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-              }
-              else{
-                tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-                tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-              }i=0;
-      }
-    if(tomerge[i].x1 == tomerge[j].x2 and tomerge[i].y1 == tomerge[j].y1 and tomerge[i].y2 == tomerge[j].y2){
-      rectangle r1;
-      r1 = {tomerge[j].x1,tomerge[i].x2,tomerge[i].y1,tomerge[j].y2};
-      tomerge.push_back(r1);
-      //cout<<"4\n"<<"["<<r1.x1<<":"<<r1.x2<<"]:["<<r1.y1<<":"<<r1.y2<<"]\n";
-            if(i>j){
-              tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-              tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-            }
-            else{
-              tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-              tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-            }i=0;
-
-    }
-
-}//i=j
-sort(tomerge.begin(),tomerge.end(),veccomp);
-//cout<<tomerge.size()<<"\n";
-//if(tomerge.size() == 0) break;
-}
-////cout<<"btw i n j "<<i<<" "<<tomerge.size()<<"\n";
-}
-return(tomerge);
-}
+// vector<rectangle> merge_rect(vector<rectangle> &tomerge){
+//
+// for(int i = 0; i<tomerge.size();i++){
+// 	for(int j=0;j<tomerge.size();j++){
+//       if(i!=j){
+//     		if(tomerge[i].x2 == tomerge[j].x1 and tomerge[i].y2 == tomerge[j].y2 and tomerge[i].y1 == tomerge[j].y1){
+//           rectangle r1;
+//           r1 = {tomerge[i].x1,tomerge[j].x2,tomerge[i].y1,tomerge[j].y2};
+//           tomerge.push_back(r1);
+//           //cout<<"1\n"<<"["<<r1.x1<<":"<<r1.x2<<"]:["<<r1.y1<<":"<<r1.y2<<"]\n";
+//                 if(i>j){
+//                   tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
+//                   tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
+//                 }
+//                 else{
+//                   tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
+//                   tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
+//                 }i=0;
+//         }
+//         if(tomerge[i].y2 == tomerge[j].y1 and tomerge[i].x2 == tomerge[j].x2 and tomerge[i].x1 == tomerge[j].x1){
+//           rectangle r1;
+//           r1 = {tomerge[i].x1,tomerge[j].x2,tomerge[i].y1,tomerge[j].y2};
+//           tomerge.push_back(r1);
+//           //cout<<"2\n"<<"["<<r1.x1<<":"<<r1.x2<<"]:["<<r1.y1<<":"<<r1.y2<<"]\n";
+//                 if(i>j){
+//                   tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
+//                   tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
+//                 }
+//                 else{
+//                   tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
+//                   tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
+//                 }i=0;
+//         }
+//       if(tomerge[i].y1 == tomerge[j].y2 and tomerge[i].x2 == tomerge[j].x2 and tomerge[i].x1 == tomerge[j].x1){
+//         rectangle r1;
+//         r1 = {tomerge[i].x1,tomerge[j].x2,tomerge[j].y1,tomerge[i].y2};
+//         tomerge.push_back(r1);
+//         //cout<<"3\n"<<"["<<r1.x1<<":"<<r1.x2<<"]:["<<r1.y1<<":"<<r1.y2<<"]\n";
+//               if(i>j){
+//                 tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
+//                 tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
+//               }
+//               else{
+//                 tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
+//                 tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
+//               }i=0;
+//       }
+//     if(tomerge[i].x1 == tomerge[j].x2 and tomerge[i].y1 == tomerge[j].y1 and tomerge[i].y2 == tomerge[j].y2){
+//       rectangle r1;
+//       r1 = {tomerge[j].x1,tomerge[i].x2,tomerge[i].y1,tomerge[j].y2};
+//       tomerge.push_back(r1);
+//       //cout<<"4\n"<<"["<<r1.x1<<":"<<r1.x2<<"]:["<<r1.y1<<":"<<r1.y2<<"]\n";
+//             if(i>j){
+//               tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
+//               tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
+//             }
+//             else{
+//               tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
+//               tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
+//             }i=0;
+//
+//     }
+//
+// }//i=j
+// sort(tomerge.begin(),tomerge.end(),veccomp);
+// //cout<<tomerge.size()<<"\n";
+// //if(tomerge.size() == 0) break;
+// }
+// ////cout<<"btw i n j "<<i<<" "<<tomerge.size()<<"\n";
+// }
+// return(tomerge);
+// }
 
 
 
 int main(){
 	int l = 8;
 	int l0 = 5;
-	double approximation = 0.1;	
+	double approximation = 0.01;
 	double lmax;
 	lmax = l*1.5;
 	double ymax,ymin;
@@ -196,6 +187,8 @@ int main(){
 	rectangle r1;
 	//r1 = {xmin-5, xmax+5, min(ymin,h)-5, ymax+5};
 	r1 = {-15,15,0,15};
+	int N_of_squares = ((r1.x2-r1.x1)/approximation)*((r1.y2-r1.y1)/approximation);
+	char* square_type = new char[N_of_squares];
 	r1.d = sqrt(abs(r1.x2-r1.x1)*abs(r1.x2-r1.x1) + abs(r1.y2-r1.y1)*abs(r1.y2-r1.y1));
 	vector<rectangle> VectorOfRectangles;
 	vector<rectangle> InternalRectangles;
@@ -204,7 +197,7 @@ int main(){
   //
 	std::chrono::time_point<std::chrono:: high_resolution_clock> start, end;
 	start = std::chrono::high_resolution_clock::now();
-
+	int k = 0;
   while(r2.y2 < r1.y2){
     while(r2.x2 < r1.x2){
       r2.x1 += approximation;
@@ -219,46 +212,14 @@ int main(){
       r2.Mg[3] = max(g4(r2.x1,l,l,l0),g4(r2.x2,l,l,l0)) + max(g4(l0,r2.y1,l,l0),g4(l0,r2.y2,l,l0));
       r2.mm = max(max(r2.mg[0],r2.mg[1]),max(r2.mg[2],r2.mg[3]));
       r2.MM = max(max(r2.Mg[0],r2.Mg[1]),max(r2.Mg[2],r2.Mg[3]));
-    VectorOfRectangles.push_back(r2);
+			square_type[k] = char(bool(r2.MM < 0) + bool(r2.mm < 0));
+			k++;
     }
     r2.x1 = r1.x1;
     r2.x2 = r2.x1 + approximation;
     r2.y1 += approximation;
     r2.y2 += approximation;
   }
-
-  while(VectorOfRectangles.size() > 0){ //(VectorOfRectangles.size() < 10) and
-
-  	if(VectorOfRectangles.front().MM >= 0){
-  		if(VectorOfRectangles.front().mm > 0){
-  			if(((VectorOfRectangles.front().x1 <= 0 and VectorOfRectangles.front().x2 >= 0) and (VectorOfRectangles.front().y1 <= 0 and VectorOfRectangles.front().y2 >= lmax))
-  			 or	((VectorOfRectangles.front().x1 <= l0 and VectorOfRectangles.front().x2 >= l0) and (VectorOfRectangles.front().y1 <= 0 and VectorOfRectangles.front().y2 >= lmax))){//cout<<"aaaaaaaaaaaaa\n";
-
-  				if(VectorOfRectangles.front().d <= approximation){
-  					BoundRectangles.push_back(VectorOfRectangles.front());
-  				}
-  				else{
-  					division(VectorOfRectangles);
-  				}
-  			}
-  		}
-  		else{
-  			if(VectorOfRectangles.front().d <= approximation){
-  				BoundRectangles.push_back(VectorOfRectangles.front());
-  			}
-  			else{
-  				division(VectorOfRectangles);
-  			}
-  		}
-  		}
-  		else{
-  			InternalRectangles.push_back(VectorOfRectangles.front());
-  		}
-  		VectorOfRectangles.erase(VectorOfRectangles.begin(),VectorOfRectangles.begin()+1);
-  }
-
-
-
 
 
 
@@ -271,17 +232,23 @@ int main(){
   cout<<fixed;
 	cout.precision(3);
 
+	int xpenb_x = (r1.x2-r1.x1)/approximation;
+	int xpenb_y = (r1.y2-r1.y1)/approximation;
 
-  for(int i = 0;i<InternalRectangles.size();i++){
-  	cout<<"["<<InternalRectangles[i].x1<<":"<<InternalRectangles[i].x2<<"]:["<<InternalRectangles[i].y1<<":"<<InternalRectangles[i].y2<<"]\n";
-  }
-  cout<<"_+_+_+_\n";
-  for(int i = 0;i<BoundRectangles.size();i++){
-  	cout<<"["<<BoundRectangles[i].x1<<":"<<BoundRectangles[i].x2<<"]:["<<BoundRectangles[i].y1<<":"<<BoundRectangles[i].y2<<"]\n";
-  }
-
-  for(int i = 0;i<VectorOfRectangles.size();i++){
-  //cout<<"["<<VectorOfRectangles[i].x1<<":"<<VectorOfRectangles[i].x2<<"]:["<<VectorOfRectangles[i].y1<<":"<<VectorOfRectangles[i].y2<<"]\n";
-  }
+	//BOUNDARY
+	for(int i = 0; i < N_of_squares; i++){
+		if(int(square_type[i])==1){
+				cout<<"["<<r1.x1+i%(xpenb_x)*approximation<<":"<<r1.x1+(i%(xpenb_x) + 1)*approximation<<"]:";
+				cout<<"["<<r1.y1+i/(xpenb_x)*approximation<<":"<<r1.y1+(i/(xpenb_x) + 1)*approximation<<"]\n";
+		}
+	}
+	//internal
+	  cout<<"_+_+_+_\n";
+	for(int i = 0; i < N_of_squares; i++){
+		if(int(square_type[i])==2){
+			cout<<"["<<r1.x1+i%(xpenb_x)*approximation<<":"<<r1.x1+(i%(xpenb_x) + 1)*approximation<<"]:";
+			cout<<"["<<r1.y1+i/(xpenb_x)*approximation<<":"<<r1.y1+(i/(xpenb_x) + 1)*approximation<<"]\n";
+	}
+	}
 
 }
