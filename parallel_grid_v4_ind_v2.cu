@@ -45,12 +45,14 @@ __host__ __device__ double interval_eval(double x1,double x2,double y1, double y
 
 	mm = max(max(mm1,mm2),max(mm3,mm4));
 	MM = max(max(MM1,MM2),max(MM3,MM4));
-	return char(bool(MM < 0) + bool(mm < 0));
+	char a = char(bool(MM < 0) + bool(mm < 0));
+
+	return a;
 }
 
 __global__ void kernel(char* device_grid) {
-double x1[10],x2[10],y1[10],y2[10];
-int i = blockIdx.x * blockDim.x + threadIdx.x;
+double x1[100],x2[100],y1[100],y2[100];
+long int i = blockIdx.x * blockDim.x + threadIdx.x;
 
 for(int j = 0;j < stride[0];j++){
 
@@ -66,6 +68,7 @@ for(int j = 0;j < stride[0];j++){
 	device_grid[i*stride[0]+j] = interval_eval(x1[j],x2[j],y1[j],y2[j],l,l0,lmax);
 
 	}
+
 }
 
 
@@ -73,7 +76,7 @@ for(int j = 0;j < stride[0];j++){
 int main(){
   int l = 8;
 	int l0 = 5;
-	double approximation = 0.01;
+	double approximation = 0.001;
 	double lmax;
 	lmax = l*1.5;
   cout<<fixed;
@@ -84,22 +87,23 @@ int main(){
 	int n_of_blocks = (r1.y2-r1.y1)/approximation;
 	int n_of_threads = (r1.x2-r1.x1)/approximation;
   int offset[1] = {10};
-	// if(n_of_threads > 1000){
-	// 	offset[0] *=10;
-	// 	n_of_threads /= 10;
-	// }
+	if(n_of_threads > 1000){
+		offset[0] *=10;
+		//n_of_threads /= 10;
+
+	}
   cout<<"# <<<"<<n_of_blocks<<" , "<<n_of_threads<<">>>\n";
-	char* device_grid;
+char* device_grid = new char[n_of_blocks * n_of_threads];
 
   std::chrono::time_point<std::chrono:: high_resolution_clock> start, end;
 	start = std::chrono::high_resolution_clock::now();
 
-	cudaMallocManaged(&device_grid, n_of_blocks * n_of_threads * sizeof (char));
+	cudaMallocManaged(&device_grid, n_of_blocks * n_of_threads * sizeof (int));
 
   cudaMemcpyToSymbol(accuracy, &approximation, sizeof(double));
   cudaMemcpyToSymbol(stride, &offset, sizeof(int));
   cudaMemcpyToSymbol(bounds, &const_bounds, 4*sizeof(double));
-
+	cout<<"#"<<n_of_blocks<<"  "<<n_of_threads/offset[0]<<"\n";
 	kernel<<<n_of_blocks,n_of_threads/offset[0]>>>(device_grid);
 	cudaDeviceSynchronize();
 
@@ -108,20 +112,36 @@ int elapsed_seconds = std::chrono::duration_cast<std::chrono::microseconds>(end-
 std::time_t end_time = std::chrono::system_clock::to_time_t(end);
 cout<< "#. Время выполнения: " << elapsed_seconds << "  microseconds\n";
 cout<<"#"<<n_of_blocks*n_of_threads<<"\n";
-//BOUNDARY
-for(int i = 0; i < n_of_blocks*n_of_threads; i++){
-	if(int(device_grid[i])==1){
-			cout<<"["<<r1.x1+i%(n_of_threads)*approximation<<":"<<r1.x1+(i%(n_of_threads) + 1)*approximation<<"]:";
-			cout<<"["<<r1.y1+i/(n_of_threads)*approximation<<":"<<r1.y1+(i/(n_of_threads) + 1)*approximation<<"]\n";
-	}
-}
-//internal
-  cout<<"_+_+_+_\n";
-for(int i = 0; i < n_of_blocks*n_of_threads; i++){
-	if(int(device_grid[i])==2){
-			cout<<"["<<r1.x1+i%(n_of_threads)*approximation<<":"<<r1.x1+(i%(n_of_threads) + 1)*approximation<<"]:";
-			cout<<"["<<r1.y1+i/(n_of_threads)*approximation<<":"<<r1.y1+(i/(n_of_threads) + 1)*approximation<<"]\n";
-	}
+////BOUNDARY
+//for(int i = 0; i < n_of_blocks*n_of_threads; i++){
+	//if(int(device_grid[i])==1){
+			//cout<<"["<<r1.x1+i%(n_of_threads)*approximation<<":"<<r1.x1+(i%(n_of_threads) + 1)*approximation<<"]:";
+			//cout<<"["<<r1.y1+i/(n_of_threads)*approximation<<":"<<r1.y1+(i/(n_of_threads) + 1)*approximation<<"]\n";
+	//}
+//}
+//// //internal
+   //cout<<"_+_+_+_\n";
+ //for(int i = 0; i < n_of_blocks*n_of_threads; i++){
+ 	//if(int(device_grid[i])==2){
+ 			//cout<<"["<<r1.x1+i%(n_of_threads)*approximation<<":"<<r1.x1+(i%(n_of_threads) + 1)*approximation<<"]:";
+ 			//cout<<"["<<r1.y1+i/(n_of_threads)*approximation<<":"<<r1.y1+(i/(n_of_threads) + 1)*approximation<<"]\n";
+ 	//}
+ //}
+int sq = 0;
+for(int i = 0;i < n_of_blocks*n_of_threads;i++){
+		if(int(device_grid[i]) == 2){
+				sq++;
+		}else{
+			if(sq > 0){
+					i-=sq;
+					cout<<"["<<r1.x1+i%(n_of_threads)*approximation<<":"<<r1.x1+(i%(n_of_threads) + sq)*approximation<<"]:";
+					cout<<"["<<r1.y1+i/(n_of_threads)*approximation<<":"<<r1.y1+(i/(n_of_threads) + 1)*approximation<<"]\n";
+					i += sq;
+					sq=0;
+				}
+			}
 }
 
+
+cudaFree(device_grid);
 }
