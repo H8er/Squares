@@ -92,81 +92,6 @@ bool veccomp(rectangle &a, rectangle &b){
 }
 
 
-// vector<rectangle> merge_rect(vector<rectangle> &tomerge){
-//
-// for(int i = 0; i<tomerge.size();i++){
-// 	for(int j=0;j<tomerge.size();j++){
-//       if(i!=j){
-//     		if(tomerge[i].x2 == tomerge[j].x1 and tomerge[i].y2 == tomerge[j].y2 and tomerge[i].y1 == tomerge[j].y1){
-//           rectangle r1;
-//           r1 = {tomerge[i].x1,tomerge[j].x2,tomerge[i].y1,tomerge[j].y2};
-//           tomerge.push_back(r1);
-//           //cout<<"1\n"<<"["<<r1.x1<<":"<<r1.x2<<"]:["<<r1.y1<<":"<<r1.y2<<"]\n";
-//                 if(i>j){
-//                   tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-//                   tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-//                 }
-//                 else{
-//                   tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-//                   tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-//                 }i=0;
-//         }
-//         if(tomerge[i].y2 == tomerge[j].y1 and tomerge[i].x2 == tomerge[j].x2 and tomerge[i].x1 == tomerge[j].x1){
-//           rectangle r1;
-//           r1 = {tomerge[i].x1,tomerge[j].x2,tomerge[i].y1,tomerge[j].y2};
-//           tomerge.push_back(r1);
-//           //cout<<"2\n"<<"["<<r1.x1<<":"<<r1.x2<<"]:["<<r1.y1<<":"<<r1.y2<<"]\n";
-//                 if(i>j){
-//                   tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-//                   tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-//                 }
-//                 else{
-//                   tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-//                   tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-//                 }i=0;
-//         }
-//       if(tomerge[i].y1 == tomerge[j].y2 and tomerge[i].x2 == tomerge[j].x2 and tomerge[i].x1 == tomerge[j].x1){
-//         rectangle r1;
-//         r1 = {tomerge[i].x1,tomerge[j].x2,tomerge[j].y1,tomerge[i].y2};
-//         tomerge.push_back(r1);
-//         //cout<<"3\n"<<"["<<r1.x1<<":"<<r1.x2<<"]:["<<r1.y1<<":"<<r1.y2<<"]\n";
-//               if(i>j){
-//                 tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-//                 tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-//               }
-//               else{
-//                 tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-//                 tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-//               }i=0;
-//       }
-//     if(tomerge[i].x1 == tomerge[j].x2 and tomerge[i].y1 == tomerge[j].y1 and tomerge[i].y2 == tomerge[j].y2){
-//       rectangle r1;
-//       r1 = {tomerge[j].x1,tomerge[i].x2,tomerge[i].y1,tomerge[j].y2};
-//       tomerge.push_back(r1);
-//       //cout<<"4\n"<<"["<<r1.x1<<":"<<r1.x2<<"]:["<<r1.y1<<":"<<r1.y2<<"]\n";
-//             if(i>j){
-//               tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-//               tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-//             }
-//             else{
-//               tomerge.erase(tomerge.begin()+j,tomerge.begin()+j+1);
-//               tomerge.erase(tomerge.begin()+i,tomerge.begin()+i+1);
-//             }i=0;
-//
-//     }
-//
-// }//i=j
-// sort(tomerge.begin(),tomerge.end(),veccomp);
-// //cout<<tomerge.size()<<"\n";
-// //if(tomerge.size() == 0) break;
-// }
-// ////cout<<"btw i n j "<<i<<" "<<tomerge.size()<<"\n";
-// }
-// return(tomerge);
-// }
-
-
-
 int main(){
 	int l = 8;
 	int l0 = 5;
@@ -232,8 +157,8 @@ int main(){
   cout<<fixed;
 	cout.precision(3);
 
-	int xpenb_x = (r1.x2-r1.x1)/approximation;
-	int xpenb_y = (r1.y2-r1.y1)/approximation;
+	int size_x = (r1.x2-r1.x1)/approximation;
+	int size_y = (r1.y2-r1.y1)/approximation;
 
 	int sq = 0;
 	for(int i = 0;i < N_of_squares;i++){
@@ -243,8 +168,8 @@ int main(){
 			else{
 					if(sq>0){
 						i-=sq;
-					cout<<"["<<r1.x1+(i)%(xpenb_x)*approximation<<":"<<r1.x1+((i)%(xpenb_x) + sq)*approximation<<"]:";
-					cout<<"["<<r1.y1+(i)/(xpenb_x)*approximation<<":"<<r1.y1+((i)/(xpenb_x) + 1)*approximation<<"]\n";
+					cout<<"["<<r1.x1+(i)%(size_x)*approximation<<":"<<r1.x1+((i)%(size_x) + sq)*approximation<<"]:";
+					cout<<"["<<r1.y1+(i)/(size_x)*approximation<<":"<<r1.y1+((i)/(size_x) + 1)*approximation<<"]\n";
 					i += sq;
 					sq=0;
 					}
