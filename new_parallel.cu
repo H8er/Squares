@@ -206,4 +206,5 @@ int main(){
 
 cout<< "#. Время выполнения: " << elapsed_seconds << "  microseconds\n";
 return 0;
+	
 }
