@@ -30,10 +30,8 @@ return(l2_min*l2_min  - (x1-l0)*(x1-l0) - x2*x2);
 }
 __forceinline__ __host__ __device__ double interval_eval(double x1,double x2,double y1, double y2, double l, double l0, double lmax){
 
-
 	double mm,mm1,mm2,mm3,mm4;
 	double MM,MM1,MM2,MM3,MM4;
-
 
 	if(x1<0 and x2>0){
 		 x1 = 0;
@@ -43,7 +41,6 @@ __forceinline__ __host__ __device__ double interval_eval(double x1,double x2,dou
 		 x1 = l0;
 		 x2 = l0;
 	}
-
 
 	mm1 = min(g1(x1,0,lmax),g1(x2,0,lmax)) + min(g1(lmax,y1,lmax),g1(lmax,y2,lmax));
 	MM1 = max(g1(x1,0,lmax),g1(x2,0,lmax)) + max(g1(lmax,y1,lmax),g1(lmax,y2,lmax));
@@ -60,7 +57,6 @@ __forceinline__ __host__ __device__ double interval_eval(double x1,double x2,dou
 	mm = max(max(mm1,mm2),max(mm3,mm4));
 	MM = max(max(MM1,MM2),max(MM3,MM4));
 	char a = char(bool(MM <= 0) + bool(mm <= 0));
-
 	return a;
 }
 
@@ -92,7 +88,7 @@ int main(){
 	double approximation = 0.0001;
 	double lmax;
 	lmax = l*1.5;
-  cout<<fixed;
+  	cout<<fixed;
 	cout.precision(4);
 	rectangle r1;
 
